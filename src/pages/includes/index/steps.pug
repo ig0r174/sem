@@ -1,0 +1,16 @@
+mixin step(title, description, img)
+    li.steps-list__item
+        div.steps-list__img-parent
+            img.steps-list__img(src="/img/index/" + img)
+        p.steps-list__title!=title
+        span.steps-list__description!=description
+
+div.steps
+    div.steps__container
+        h5.steps__title 5 шагов к заявке
+        ul.steps-list
+            +step('Расчетать стоимость', 'Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.', 'ico1.png')
+            +step('Вызвать курьера', 'Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.', 'ico2.png')
+            +step('Оплатить услуги', 'Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.', 'ico3.png')
+            +step('Заключить договор', 'Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.', 'ico4.png')
+            +step('Предоставить данные', 'Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.', 'ico5.png')

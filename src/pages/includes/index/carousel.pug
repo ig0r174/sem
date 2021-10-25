@@ -1,0 +1,17 @@
+mixin slide(title, description, img)
+    li.carousel-list__item
+        div.carousel-list__data
+            h3.carousel-list__title!=title
+            p.carousel-list__description!=description
+            a.carousel-list__button(href="#") Заказать доставку
+        div.carousel-list__img
+            img(src="/img/index/" + img)
+
+div.carousel
+    ul.carousel-dots
+        li.carousel-dots__item.carousel-dots__item--active
+        li.carousel-dots__item
+    div.carousel__container
+        ul.carousel-list
+            +slide('Срочная доставка</br>день в день', 'Для тех, кто не может ждать у нас есть услуга срочной курьерской </br>доставки корреспондеции и других видов отправлений.', 's1.png')
+            +slide('Подписание</br>договора за 1 час', 'В течение часа наш курьер заберет вашу посылку и подпишет с Вами </br>договор о предоставлении услуг', 's2.png')

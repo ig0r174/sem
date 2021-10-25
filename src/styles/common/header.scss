@@ -1,0 +1,143 @@
+@import "../mixins/media";
+
+body {
+  background: #000;
+}
+
+.header {
+  position: relative;
+  z-index: 1;
+}
+
+.header:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 717px;
+  background: radial-gradient(75.49% 75.49% at 61.01% 75.77%, #376A9A 0%, #2B5276 100%);
+  z-index: -1;
+}
+
+.header__container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 27px;
+  padding-top: 26px;
+  padding-left: 15px;
+  padding-right: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+
+  @include media-tablet {
+    padding-top: 27px;
+    padding-left: 15px;
+    padding-right: 15px;
+    align-items: flex-start;
+  }
+
+  @include media-mobile {
+    padding-right: 29px;
+  }
+
+  .header__logo {
+    display: flex;
+    align-items: center;
+
+    @include media-tablet {
+      padding-top: 18px;
+    }
+
+    .header__logo__img {
+      width: 120px;
+      height: 16px;
+    }
+
+  }
+
+  .header__logo__description {
+    font-size: 13px;
+    font-weight: 300;
+    color: #A9C5E0;
+    margin-top: 1px;
+    margin-left: 80px;
+    position: relative;
+
+    @include media-mobile {
+      display: none;
+    }
+  }
+
+  .header__logo__description:before {
+    content: "";
+    position: absolute;
+    width: 1px;
+    height: 14px;
+    background: #A9C5E0;
+    left: -30px;
+    top: -1px;
+  }
+
+  .header__right {
+    display: flex;
+    align-items: center;
+
+    @include media-tablet {
+      flex-direction: column-reverse;
+      align-items: flex-end;
+    }
+
+    .header__right__btn {
+      width: 170px;
+      height: 52px;
+      font-size: 18px;
+      color: #E5E31F;
+      background: transparent;
+      border-radius: 10px;
+      border: 1px solid #E5E31F;
+    }
+
+    .header__right__phone {
+      position: relative;
+      top: 1px;
+      color: #a9c5e0;
+      margin-right: 77px;
+      font-size: 13px;
+      font-weight: 300;
+
+      @include media-tablet {
+        margin-right: 0;
+        margin-top: 35px;
+      }
+
+      @include media-mobile {
+        display: none;
+      }
+
+    }
+
+    .header__right__phone:before {
+      content: url("/img/header/phone.svg");
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      left: -26px;
+      top: -1px;
+
+      @include media-tablet {
+        left: -23px;
+        top: 0;
+      }
+
+    }
+
+  }
+
+}
+
+main.main {
+  position: relative;
+  z-index: 1;
+}
