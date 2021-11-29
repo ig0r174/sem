@@ -9,9 +9,52 @@ mixin slide(title, description, img)
 
 div.carousel
     ul.carousel-dots
-        li.carousel-dots__item.carousel-dots__item--active
-        li.carousel-dots__item
     div.carousel__container
         ul.carousel-list
             +slide('Срочная доставка</br>день в день', 'Для тех, кто не может ждать у нас есть услуга срочной курьерской </br>доставки корреспондеции и других видов отправлений.', 's1.png')
             +slide('Подписание</br>договора за 1 час', 'В течение часа наш курьер заберет вашу посылку и подпишет с Вами </br>договор о предоставлении услуг', 's2.png')
+
+script(type='text/javascript').
+
+    function initCarousel(){
+        document.querySelector('.carousel-dots').innerHTML = "";
+
+        document.querySelectorAll('.carousel-list__item').forEach((el, i) => {
+            el.style.left = i * document.querySelector(".carousel").clientWidth + "px";
+        });
+
+        let slidesCount = document.querySelectorAll('.carousel-list__item').length;
+        for (let i = 1; i <= slidesCount; i++){
+            let newDot = document.createElement("div");
+            newDot.classList.add("carousel-dots__item");
+            if(i === 1) newDot.classList.add("carousel-dots__item--active");
+
+            newDot.addEventListener("click", (e) => {
+                let parentBlock = Array.prototype.slice.call(newDot.parentElement.children);
+                let slideId = parentBlock.indexOf(newDot) + 1;
+
+                document.querySelectorAll(".carousel-dots__item").forEach((el) => el.classList.remove("carousel-dots__item--active"));
+                newDot.classList.add("carousel-dots__item--active");
+
+                document.querySelectorAll(".carousel-list .carousel-list__item").forEach((el) => {
+                    let parentBlock = Array.prototype.slice.call(el.parentElement.children);
+                    let elSlideId = parentBlock.indexOf(el) + 1;
+                    let newLeft = Math.abs(elSlideId - slideId) * document.querySelector(".carousel").clientWidth + "px";
+
+                    if (elSlideId < slideId)
+                        newLeft = "-" + newLeft;
+
+                    el.style.left = newLeft;
+
+                });
+
+                document.querySelector(`.carousel-list .carousel-list__item:nth-child(${slideId})`).style.left = 0;
+            });
+
+            document.querySelector(".carousel-dots").appendChild(newDot);
+        }
+
+    }
+
+    document.addEventListener('DOMContentLoaded', () => initCarousel());
+    window.addEventListener('resize', () => initCarousel());
