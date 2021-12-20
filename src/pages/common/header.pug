@@ -6,3 +6,28 @@ nav.header
         div.header__right
             div.header__right__phone 8 (909) 023-12-51
             button.header__right__btn Вход
+
+    script.
+        document.querySelector(".header__right__btn").addEventListener("click", () => {
+            document.querySelector(".auth").classList.add("opened");
+            window.addEventListener("click", onClickOutsideAuth);
+            document.querySelector("body").style.overflow = "hidden";
+        });
+
+        function onClickOutsideAuth(e) {
+            if (e.target.closest("form") === null && !e.target.classList.contains("header__right__btn")) {
+                document.querySelector(".auth").classList.remove("opened");
+                window.removeEventListener("click", onClickOutsideAuth);
+                document.querySelector("body").style.overflow = "auto";
+            }
+        }
+
+        document.querySelector(".auth__close-btn").addEventListener("click", () => {
+            document.querySelector(".auth").classList.remove("opened");
+            document.querySelector("body").style.overflow = "auto";
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            if( document.querySelector(".carousel") === null )
+                document.querySelector(".header").classList.add("header__small");
+        });

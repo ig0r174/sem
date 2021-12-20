@@ -1,42 +1,127 @@
-<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Delivery Landing</title><meta content="width=device-width, initial-scale=1" name="viewport"><meta content="ie=edge" http-equiv="x-ua-compatible"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/fonts/ProximaNova/stylesheet.css"></head><body><nav class="header"><div class="header__container"><div class="header__logo"><img class="header__logo__img" src="img/header/logo.svg" alt="logo"><div class="header__logo__description">Курьерская служба доставки</div></div><div class="header__right"><div class="header__right__phone">8 (909) 023-12-51</div><button class="header__right__btn">Вход</button></div></div></nav><main class="main"><div class="carousel"><ul class="carousel-dots"></ul><div class="carousel__container"><ul class="carousel-list"><li class="carousel-list__item"><div class="carousel-list__data"><h3 class="carousel-list__title">Срочная доставка</br>день в день</h3><p class="carousel-list__description">Для тех, кто не может ждать у нас есть услуга срочной курьерской </br>доставки корреспондеции и других видов отправлений.</p><a class="carousel-list__button" href="#">Заказать доставку</a></div><div class="carousel-list__img"><img src="/img/index/s1.png"></div></li><li class="carousel-list__item"><div class="carousel-list__data"><h3 class="carousel-list__title">Подписание</br>договора за 1 час</h3><p class="carousel-list__description">В течение часа наш курьер заберет вашу посылку и подпишет с Вами </br>договор о предоставлении услуг</p><a class="carousel-list__button" href="#">Заказать доставку</a></div><div class="carousel-list__img"><img src="/img/index/s2.png"></div></li></ul></div></div><script type="text/javascript">function initCarousel(){
-    document.querySelector('.carousel-dots').innerHTML = "";
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Delivery Landing</title><meta content="width=device-width, initial-scale=1" name="viewport"><meta content="ie=edge" http-equiv="x-ua-compatible"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/fonts/ProximaNova/stylesheet.css"></head><body><div class="auth"><div class="auth__container"><form class="auth__form" action="admin.html" onsubmit="return validateAuthForm();"><div class="auth__close-btn"></div><h3 class="auth__title">Авторизация</h3><div class="auth__description">Введите логин и пароль, чтобы войти в личный кабинет</div><div class="auth__inputs"><input class="auth__input" placeholder="Логин" name="login"><input class="auth__input" placeholder="Пароль" name="password"></div><div class="auth__error"></div><button class="auth__button" type="submit">Войти</button></form></div><script>function validateAuthForm() {
+    document.querySelector(".auth__error").style.display = "none";
+
+    let login = document.querySelector('input[name="login"]').value;
+    let password = document.querySelector('input[name="password"]').value;
+    let error = false;
+
+    if (login.length === 0) {
+        error = "Логин не может быть пустым";
+    } else if (password.length === 0) {
+        error = "Пароль не может быть пустым";
+    } else if (login !== "admin" || password !== "admin") {
+        error = "Неверный логин или пароль";
+    }
+
+    if (error) {
+        document.querySelector(".auth__error").textContent = error;
+        document.querySelector(".auth__error").style.display = "block";
+        return false;
+    }
+}</script></div><nav class="header"><div class="header__container"><div class="header__logo"><img class="header__logo__img" src="img/header/logo.svg" alt="logo"><div class="header__logo__description">Курьерская служба доставки</div></div><div class="header__right"><div class="header__right__phone">8 (909) 023-12-51</div><button class="header__right__btn">Вход</button></div></div><script>document.querySelector(".header__right__btn").addEventListener("click", () => {
+    document.querySelector(".auth").classList.add("opened");
+    window.addEventListener("click", onClickOutsideAuth);
+    document.querySelector("body").style.overflow = "hidden";
+});
+
+function onClickOutsideAuth(e) {
+    if (e.target.closest("form") === null && !e.target.classList.contains("header__right__btn")) {
+        document.querySelector(".auth").classList.remove("opened");
+        window.removeEventListener("click", onClickOutsideAuth);
+        document.querySelector("body").style.overflow = "auto";
+    }
+}
+
+document.querySelector(".auth__close-btn").addEventListener("click", () => {
+    document.querySelector(".auth").classList.remove("opened");
+    document.querySelector("body").style.overflow = "auto";
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    if( document.querySelector(".carousel") === null )
+        document.querySelector(".header").classList.add("header__small");
+});</script></nav><main class="main"><div class="carousel"><ul class="carousel-dots"></ul><div class="carousel__container"><ul class="carousel-list"><li class="carousel-list__item"><div class="carousel-list__data"><h3 class="carousel-list__title">Срочная доставка</br>день в день</h3><p class="carousel-list__description">Для тех, кто не может ждать у нас есть услуга срочной курьерской </br>доставки корреспондеции и других видов отправлений.</p><a class="carousel-list__button" href="#">Заказать доставку</a></div><div class="carousel-list__img"><img src="/img/index/s1.png"></div></li><li class="carousel-list__item"><div class="carousel-list__data"><h3 class="carousel-list__title">Подписание</br>договора за 1 час</h3><p class="carousel-list__description">В течение часа наш курьер заберет вашу посылку и подпишет с Вами </br>договор о предоставлении услуг</p><a class="carousel-list__button" href="#">Заказать доставку</a></div><div class="carousel-list__img"><img src="/img/index/s2.png"></div></li></ul></div></div><script type="text/javascript">function initCarousel(){
+
+    let slides = document.querySelectorAll('.carousel-list__item'),
+        firstSlide = slides[0],
+        cloneLast = slides[slides.length - 1].cloneNode(true);
+
+    document.querySelector(".carousel-list").insertBefore(cloneLast, firstSlide);
 
     document.querySelectorAll('.carousel-list__item').forEach((el, i) => {
-        el.style.left = i * document.querySelector(".carousel").clientWidth + "px";
+        if(i === 1) el.classList.add("carousel-list__item--active");
+
+        el.dataset.id = i;
+        el.style.left = (i - 1) * document.querySelector(".carousel").clientWidth + "px";
     });
 
+    initDots();
+}
+
+function initDots() {
+    document.querySelectorAll('.carousel-dots__item').forEach((el) => el.remove());
     let slidesCount = document.querySelectorAll('.carousel-list__item').length;
-    for (let i = 1; i <= slidesCount; i++){
+    for (let i = 1; i <= slidesCount - 1; i++) {
         let newDot = document.createElement("div");
         newDot.classList.add("carousel-dots__item");
-        if(i === 1) newDot.classList.add("carousel-dots__item--active");
+        newDot.dataset.slideId = i;
+        if (i === 1) newDot.classList.add("carousel-dots__item--active");
 
         newDot.addEventListener("click", (e) => {
-            let parentBlock = Array.prototype.slice.call(newDot.parentElement.children);
-            let slideId = parentBlock.indexOf(newDot) + 1;
-
-            document.querySelectorAll(".carousel-dots__item").forEach((el) => el.classList.remove("carousel-dots__item--active"));
-            newDot.classList.add("carousel-dots__item--active");
-
-            document.querySelectorAll(".carousel-list .carousel-list__item").forEach((el) => {
-                let parentBlock = Array.prototype.slice.call(el.parentElement.children);
-                let elSlideId = parentBlock.indexOf(el) + 1;
-                let newLeft = Math.abs(elSlideId - slideId) * document.querySelector(".carousel").clientWidth + "px";
-
-                if (elSlideId < slideId)
-                    newLeft = "-" + newLeft;
-
-                el.style.left = newLeft;
-
-            });
-
-            document.querySelector(`.carousel-list .carousel-list__item:nth-child(${slideId})`).style.left = 0;
+            slideCarousel(i, true);
         });
 
         document.querySelector(".carousel-dots").appendChild(newDot);
     }
-
 }
 
+function slideCarousel(slideId, isUserInteraction) {
+
+    document.querySelectorAll(".carousel-dots__item").forEach((el) => el.classList.remove("carousel-dots__item--active"));
+
+    document.querySelectorAll(".carousel-list .carousel-list__item").forEach((el) => {
+        let newLeft = Math.abs(el.dataset.id - slideId) * document.querySelector(".carousel").clientWidth + "px";
+
+        if (el.dataset.id < slideId) {
+            newLeft = "-" + newLeft;
+        }
+        el.style.left = newLeft;
+    });
+
+    if (slideId === (document.querySelectorAll(".carousel-list .carousel-list__item").length - 1) && !isUserInteraction ) {
+        setTimeout(function() {
+            document.querySelectorAll(".carousel-list .carousel-list__item").forEach((el) => el.classList.add("no-transition"));
+            slideCarousel(0);
+        }, 300);
+    }
+
+    if (slideId === 0 && !isUserInteraction)
+        setTimeout(function () {
+            document.querySelectorAll(".carousel-list .carousel-list__item").forEach((el) => el.classList.remove("no-transition"));
+        }, 10)
+
+    document.querySelectorAll(".carousel-list__item").forEach((el) => el.classList.remove("carousel-list__item--active"));
+
+    document.querySelector(`.carousel-list .carousel-list__item[data-id="${slideId}"]`).style.left = 0;
+    document.querySelector(`.carousel-list .carousel-list__item[data-id="${slideId}"]`).classList.add("carousel-list__item--active");
+
+    if( slideId === 0 )
+        document.querySelector(`[data-slide-id="${document.querySelector(".carousel-list .carousel-list__item:last-child").dataset.id}"]`).classList.add("carousel-dots__item--active");
+    else
+        document.querySelector(`[data-slide-id="${slideId}"]`).classList.add("carousel-dots__item--active");
+}
+
+let intervalSlideId = 2;
+setInterval(function () {
+
+    if (intervalSlideId > document.querySelectorAll('.carousel-dots__item').length)
+        intervalSlideId = 1;
+    slideCarousel(intervalSlideId);
+    intervalSlideId++;
+
+}, 5000);
+
 document.addEventListener('DOMContentLoaded', () => initCarousel());
-window.addEventListener('resize', () => initCarousel());</script><div class="steps"><div class="steps__container"><h5 class="steps__title">5 шагов к заявке</h5><ul class="steps-list"><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico1.png"></div><p class="steps-list__title">Расчетать стоимость</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico2.png"></div><p class="steps-list__title">Вызвать курьера</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico3.png"></div><p class="steps-list__title">Оплатить услуги</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico4.png"></div><p class="steps-list__title">Заключить договор</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico5.png"></div><p class="steps-list__title">Предоставить данные</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li></ul></div></div></main><footer class="footer"><div class="footer__container"><div class="footer__logo"><img class="footer__logo__img" src="img/header/logo.svg" alt="logo"></div><div class="footer__menu"><ul class="footer-list"><li class="footer-list__item"><a href="#">О компании</a></li><li class="footer-list__item"><a href="#">Доставка из Китая</a></li><li class="footer-list__item"><a href="#">Вакансии</a></li><li class="footer-list__item"><a href="#">Все услуги</a></li><li class="footer-list__item"><a href="#">Клиенту</a></li><li class="footer-list__item"><a href="#">Акции</a></li><li class="footer-list__item"><a href="#">Франчайзинг</a></li></ul></div><div class="footer__data"><a class="footer__item" href="emailto:manager@uexpress.ru">manager@uexpress.ru</a><div class="footer__item">115221, г. Челябинск, ул. Северная, д. 29-в</div><div class="footer__item">Мы работаем по 24 часа 5 дней в неделю</div></div></div></footer></body></html>
+window.addEventListener('resize', () => {
+    initDots();
+});</script><div class="steps"><div class="steps__container"><h5 class="steps__title">5 шагов к заявке</h5><ul class="steps-list"><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico1.png"></div><p class="steps-list__title">Расчетать стоимость</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico2.png"></div><p class="steps-list__title">Вызвать курьера</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico3.png"></div><p class="steps-list__title">Оплатить услуги</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico4.png"></div><p class="steps-list__title">Заключить договор</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li><li class="steps-list__item"><div class="steps-list__img-parent"><img class="steps-list__img" src="/img/index/ico5.png"></div><p class="steps-list__title">Предоставить данные</p><span class="steps-list__description">Lorem ipsum dolor sit amet, consectetur adipisicing elitsequi nesciunt.</span></li></ul></div></div></main><footer class="footer"><div class="footer__container"><div class="footer__logo"><img class="footer__logo__img" src="img/header/logo.svg" alt="logo"></div><div class="footer__menu"><ul class="footer-list"><li class="footer-list__item"><a href="#">О компании</a></li><li class="footer-list__item"><a href="#">Доставка из Китая</a></li><li class="footer-list__item"><a href="#">Вакансии</a></li><li class="footer-list__item"><a href="#">Все услуги</a></li><li class="footer-list__item"><a href="#">Клиенту</a></li><li class="footer-list__item"><a href="#">Акции</a></li><li class="footer-list__item"><a href="#">Франчайзинг</a></li></ul></div><div class="footer__data"><a class="footer__item" href="emailto:manager@uexpress.ru">manager@uexpress.ru</a><div class="footer__item">115221, г. Челябинск, ул. Северная, д. 29-в</div><div class="footer__item">Мы работаем по 24 часа 5 дней в неделю</div></div></div></footer></body></html>

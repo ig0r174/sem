@@ -1,0 +1,85 @@
+extends common/layout
+
+block content
+    main.main
+        div.admin
+            div.admin__container.container
+                h1.admin__title Добавить новость
+                p.admin__subtitle Введите текст новости, а также приложите изображение (размер: 270х270px, формат JPG,PNG)
+                form.admin__news-form
+                    textarea.admin__textarea(placeholder="Введите текст новости" rows="6")
+                    div.admin__symbols-counter Символов <span>0</span>/150
+                    div.admin__file-body
+                        div.admin__file-selector
+                            div.admin__file-add
+                                img.admin__file-icon(src="/img/admin/image.svg" alt="image")
+                                span.admin__file-text + Добавить изображение
+                            div.admin__file-preview
+                                img.admin__file-preview-thumbnail
+                                div.admin__file-preview-name
+                                div.admin__file-preview-cancel
+                            div.admin__file-error Неверный формат изображения
+
+                        input.admin__file-input(type="file")
+                    button.admin__button(type="submit") Применить
+
+    script.
+
+
+        document.querySelector(".admin__file-add").addEventListener("click", (e) => {
+            document.querySelector(".admin__file-input").click();
+        });
+
+        function handleFileChange(e) {
+
+            document.querySelector(".admin__file-preview").style.display = "none";
+            document.querySelector(".admin__file-error").style.display = "none";
+
+            let validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+            let file = e.target.files.item(0);
+            let reader = new FileReader();
+
+            reader.onload = (function (theFile) {
+
+                let image = new Image();
+                image.src = URL.createObjectURL(file);
+
+                if( !validFileTypes.some((fileType) => fileType === file.type) ) {
+                    document.querySelector(".admin__file-error").style.display = "block";
+                    document.querySelector(".admin__file-error").textContent = "Неверный формат изображения";
+                } else {
+
+                    return function (e) {
+                        image.onload = function () {
+                            if( this.width === 270 && this.height === 270) {
+                                document.querySelector(".admin__file-preview").style.display = "flex";
+                                document.querySelector(".admin__file-preview .admin__file-preview-name").textContent = theFile.name;
+                                document.querySelector(".admin__file-preview .admin__file-preview-thumbnail").src = e.target.result;
+                            } else {
+                                document.querySelector(".admin__file-error").style.display = "block";
+                                document.querySelector(".admin__file-error").textContent = "Размер изображения должен быть 270х270px";
+                            }
+                        };
+                    };
+
+                }
+
+            })(file);
+
+            reader.readAsDataURL(file);
+
+        }
+
+        document.querySelector(".admin__file-input").addEventListener('click', (e) => e.target.value = null);
+        document.querySelector(".admin__file-input").addEventListener('change', handleFileChange, false);
+
+        document.querySelector(".admin__textarea").addEventListener('keyup', (e) => {
+            document.querySelector(".admin__symbols-counter span").textContent = e.target.value.length;
+        });
+
+        document.querySelector(".admin__file-preview-cancel").addEventListener('click', () => {
+            document.querySelector(".admin__file-preview").style.display = "none";
+            document.querySelector(".admin__file-preview .admin__file-preview-name").textContent = "";
+            document.querySelector(".admin__file-preview .admin__file-preview-thumbnail").src = " ";
+        });
+

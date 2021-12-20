@@ -1,17 +1,32 @@
+@import "../mixins/media";
+
 .auth {
   width: 100vw;
   height: 100vh;
   background: rgba(0, 0, 0, .8);
   position: fixed;
   z-index: 20;
-  display: flex;
-  align-items: center;
+  display: none;
+  overflow: auto;
+
+  &.opened {
+    display: flex;
+  }
+
+  @media (min-height: 561px) {
+    align-items: center;
+  }
 
   .auth__container {
     width: 560px;
-    height: 470px;
+    min-height: 470px;
     margin-left: auto;
     margin-right: auto;
+
+    @include media-mobile {
+      width: 100%;
+      min-height: 100%;
+    }
 
     .auth__form {
       background: #ffffff;
@@ -21,6 +36,19 @@
       box-sizing: border-box;
       position: relative;
 
+      .auth__error {
+        margin-top: 30px;
+        color: #FF2323;
+      }
+
+      @include media-mobile {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 0;
+        padding: 15px;
+      }
+
       .auth__close-btn {
         content: url(../img/header/close.svg);
         position: absolute;
@@ -28,16 +56,31 @@
         height: 26px;
         right: 30px;
         top: 31px;
+        cursor: pointer;
+        z-index: 3;
+
+        @include media-mobile {
+          top: 40px;
+          right: 21px;
+        }
       }
 
       .auth__title {
         font-weight: 700;
         font-size: 38px;
         margin: 0 0 22px;
+
+        @include media-mobile {
+          margin: 0 0 18px;
+        }
       }
 
       .auth__description {
         margin-bottom: 48px;
+
+        @include media-mobile {
+          margin-bottom: 24px;
+        }
       }
 
       .auth__input {
@@ -69,6 +112,7 @@
         outline: none;
         border: none;
         margin-top: 48px;
+        cursor: pointer;
       }
     }
   }

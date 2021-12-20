@@ -1,0 +1,137 @@
+@import "../../mixins/media";
+
+@mixin steps_items {
+
+  $maxItem: 3;
+
+  @include media-tablet {
+    $maxItem: 2;
+  }
+
+  @for $i from 1 through $maxItem {
+    &:nth-child(#{$i}) {
+      margin-bottom: 116px;
+    }
+  }
+
+  @include media-mobile {
+    &:not(:last-child) {
+      margin-bottom: 64px;
+    }
+  }
+
+}
+
+.steps {
+  background: #FFFFFF;
+  padding-top: 97px;
+  padding-bottom: 139px;
+
+  @include media-tablet {
+    padding-bottom: 96px;
+  }
+
+  @include media-mobile {
+    padding-bottom: 102px;
+  }
+
+  .steps__container {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include media-tablet {
+      padding: 0 8px;
+    }
+
+    .steps__title {
+      color: #2A496B;
+      font-size: 28px;
+      font-weight: 600;
+      margin-top: 0;
+      text-align: center;
+      margin-bottom: 148px;
+    }
+
+    .steps-list {
+      list-style-type: none;
+      margin-block-start: 0;
+      margin-block-end: 0;
+      padding-inline-start: 0;
+      display: flex;
+      flex-flow: wrap;
+      justify-content: center;
+
+      .steps-list__item {
+        max-width: calc(100% / 3);
+        text-align: center;
+
+        @include media-tablet {
+          max-width: 50%;
+        }
+
+        @include media-mobile {
+          max-width: 100%;
+        }
+
+        @include steps_items;
+
+        @include media-tablet {
+          &:last-child {
+            margin-top: 92px;
+          }
+        }
+
+        @include media-mobile {
+          &:last-child {
+            margin-top: 3px;
+          }
+        }
+
+        .steps-list__img-parent {
+          height: 50px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          @include media-mobile {
+            display: block;
+            height: auto;
+          }
+
+          .steps-list__img {
+            line-height: 0;
+          }
+
+        }
+
+        .steps-list__title {
+          font-size: 20px;
+          line-height: 28px;
+          color: #000000;
+          margin-top: 37px;
+          margin-bottom: 25px;
+
+          @include media-mobile {
+            line-height: 25px;
+            margin-top: 33px;
+          }
+
+        }
+
+        .steps-list__description {
+          display: block;
+          font-size: 15px;
+          max-width: 98%;
+          margin-left: auto;
+          margin-right: auto;
+          line-height: 19px;
+        }
+
+      }
+    }
+
+  }
+
+}
+

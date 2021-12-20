@@ -1,0 +1,98 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><title>Delivery Landing</title><meta content="width=device-width, initial-scale=1" name="viewport"><meta content="ie=edge" http-equiv="x-ua-compatible"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="/fonts/ProximaNova/stylesheet.css"></head><body><div class="auth"><div class="auth__container"><form class="auth__form" action="admin.html" onsubmit="return validateAuthForm();"><div class="auth__close-btn"></div><h3 class="auth__title">Авторизация</h3><div class="auth__description">Введите логин и пароль, чтобы войти в личный кабинет</div><div class="auth__inputs"><input class="auth__input" placeholder="Логин" name="login"><input class="auth__input" placeholder="Пароль" name="password"></div><div class="auth__error"></div><button class="auth__button" type="submit">Войти</button></form></div><script>function validateAuthForm() {
+    document.querySelector(".auth__error").style.display = "none";
+
+    let login = document.querySelector('input[name="login"]').value;
+    let password = document.querySelector('input[name="password"]').value;
+    let error = false;
+
+    if (login.length === 0) {
+        error = "Логин не может быть пустым";
+    } else if (password.length === 0) {
+        error = "Пароль не может быть пустым";
+    } else if (login !== "admin" || password !== "admin") {
+        error = "Неверный логин или пароль";
+    }
+
+    if (error) {
+        document.querySelector(".auth__error").textContent = error;
+        document.querySelector(".auth__error").style.display = "block";
+        return false;
+    }
+}</script></div><nav class="header"><div class="header__container"><div class="header__logo"><img class="header__logo__img" src="img/header/logo.svg" alt="logo"><div class="header__logo__description">Курьерская служба доставки</div></div><div class="header__right"><div class="header__right__phone">8 (909) 023-12-51</div><button class="header__right__btn">Вход</button></div></div><script>document.querySelector(".header__right__btn").addEventListener("click", () => {
+    document.querySelector(".auth").classList.add("opened");
+    window.addEventListener("click", onClickOutsideAuth);
+    document.querySelector("body").style.overflow = "hidden";
+});
+
+function onClickOutsideAuth(e) {
+    if (e.target.closest("form") === null && !e.target.classList.contains("header__right__btn")) {
+        document.querySelector(".auth").classList.remove("opened");
+        window.removeEventListener("click", onClickOutsideAuth);
+        document.querySelector("body").style.overflow = "auto";
+    }
+}
+
+document.querySelector(".auth__close-btn").addEventListener("click", () => {
+    document.querySelector(".auth").classList.remove("opened");
+    document.querySelector("body").style.overflow = "auto";
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+    if( document.querySelector(".carousel") === null )
+        document.querySelector(".header").classList.add("header__small");
+});</script></nav><main class="main"><div class="admin"><div class="admin__container container"><h1 class="admin__title">Добавить новость</h1><p class="admin__subtitle">Введите текст новости, а также приложите изображение (размер: 270х270px, формат JPG,PNG)</p><form class="admin__news-form"><textarea class="admin__textarea" placeholder="Введите текст новости" rows="6"></textarea><div class="admin__symbols-counter">Символов <span>0</span>/150</div><div class="admin__file-body"><div class="admin__file-selector"><div class="admin__file-add"><img class="admin__file-icon" src="/img/admin/image.svg" alt="image"><span class="admin__file-text">+ Добавить изображение</span></div><div class="admin__file-preview"><img class="admin__file-preview-thumbnail"><div class="admin__file-preview-name"></div><div class="admin__file-preview-cancel"></div></div><div class="admin__file-error">Неверный формат изображения</div></div><input class="admin__file-input" type="file"></div><button class="admin__button" type="submit">Применить</button></form></div></div></main><script>document.querySelector(".admin__file-add").addEventListener("click", (e) => {
+    document.querySelector(".admin__file-input").click();
+});
+
+function handleFileChange(e) {
+
+    document.querySelector(".admin__file-preview").style.display = "none";
+    document.querySelector(".admin__file-error").style.display = "none";
+
+    let validFileTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    let file = e.target.files.item(0);
+    let reader = new FileReader();
+
+    reader.onload = (function (theFile) {
+
+        let image = new Image();
+        image.src = URL.createObjectURL(file);
+
+        if( !validFileTypes.some((fileType) => fileType === file.type) ) {
+            document.querySelector(".admin__file-error").style.display = "block";
+            document.querySelector(".admin__file-error").textContent = "Неверный формат изображения";
+        } else {
+
+            return function (e) {
+                image.onload = function () {
+                    if( this.width === 270 && this.height === 270) {
+                        document.querySelector(".admin__file-preview").style.display = "flex";
+                        document.querySelector(".admin__file-preview .admin__file-preview-name").textContent = theFile.name;
+                        document.querySelector(".admin__file-preview .admin__file-preview-thumbnail").src = e.target.result;
+                    } else {
+                        document.querySelector(".admin__file-error").style.display = "block";
+                        document.querySelector(".admin__file-error").textContent = "Размер изображения должен быть 270х270px";
+                    }
+                };
+            };
+
+        }
+
+    })(file);
+
+    reader.readAsDataURL(file);
+
+}
+
+document.querySelector(".admin__file-input").addEventListener('click', (e) => e.target.value = null);
+document.querySelector(".admin__file-input").addEventListener('change', handleFileChange, false);
+
+document.querySelector(".admin__textarea").addEventListener('keyup', (e) => {
+    document.querySelector(".admin__symbols-counter span").textContent = e.target.value.length;
+});
+
+document.querySelector(".admin__file-preview-cancel").addEventListener('click', () => {
+    document.querySelector(".admin__file-preview").style.display = "none";
+    document.querySelector(".admin__file-preview .admin__file-preview-name").textContent = "";
+    document.querySelector(".admin__file-preview .admin__file-preview-thumbnail").src = " ";
+});</script><footer class="footer"><div class="footer__container"><div class="footer__logo"><img class="footer__logo__img" src="img/header/logo.svg" alt="logo"></div><div class="footer__menu"><ul class="footer-list"><li class="footer-list__item"><a href="#">О компании</a></li><li class="footer-list__item"><a href="#">Доставка из Китая</a></li><li class="footer-list__item"><a href="#">Вакансии</a></li><li class="footer-list__item"><a href="#">Все услуги</a></li><li class="footer-list__item"><a href="#">Клиенту</a></li><li class="footer-list__item"><a href="#">Акции</a></li><li class="footer-list__item"><a href="#">Франчайзинг</a></li></ul></div><div class="footer__data"><a class="footer__item" href="emailto:manager@uexpress.ru">manager@uexpress.ru</a><div class="footer__item">115221, г. Челябинск, ул. Северная, д. 29-в</div><div class="footer__item">Мы работаем по 24 часа 5 дней в неделю</div></div></div></footer></body></html>

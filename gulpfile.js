@@ -13,7 +13,7 @@ const gulp = require("gulp");
 function browsersync() {
     browserSync.init({
         server: {
-            baseDir: "/Applications/MAMP/sem/build"
+            baseDir: "./build"
         },
         port: 3030,
         notify: false
@@ -41,6 +41,16 @@ function pug2html(cb) {
         .pipe(browserSync.stream())
 }
 
+function copyFonts() {
+    return src('./src/fonts/**/*')
+        .pipe(dest('./build/fonts'))
+}
+
+function copyImages() {
+    return src('./src/img/**/*')
+        .pipe(dest('./build/img'))
+}
+
 function watching() {
     watch(['./src/styles/**/*.scss'], css)
     watch(['./src/pages/**/*.pug'], pug2html)
@@ -48,4 +58,6 @@ function watching() {
 
 exports.css = css;
 exports.pug2html = pug2html;
-exports.default = parallel(browsersync, watching, pug2html);
+exports.copyFonts = copyFonts;
+exports.copyImages = copyImages;
+exports.default = parallel(browsersync, watching, pug2html, css, copyFonts, copyImages);
